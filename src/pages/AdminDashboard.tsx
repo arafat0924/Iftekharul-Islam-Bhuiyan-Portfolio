@@ -155,11 +155,13 @@ async function uploadFiles(files: File[]) {
   const uploaded: string[] = [];
 
   for (const file of files) {
-    const dataUrl = await fileToDataUrl(file);
-    const response = await fetch("/api/upload", {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "JatiWeb");
+
+    const response = await fetch("https://api.cloudinary.com/v1_1/devppiqao/image/upload", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fileName: file.name, dataUrl }),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -167,7 +169,7 @@ async function uploadFiles(files: File[]) {
     }
 
     const data = await response.json();
-    uploaded.push(data.url);
+    uploaded.push(data.secure_url);
   }
 
   return uploaded;
