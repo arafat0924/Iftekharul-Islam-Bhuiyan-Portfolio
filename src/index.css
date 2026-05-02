@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Open Sans", "Lato", sans-serif;
+    --font-serif: "Special Elite", monospace;
+    --font-display: "Special Elite", monospace;
+    --font-outfit: "Special Elite", monospace;
+    --font-typewriter: "Special Elite", monospace;
+    --font-newspaper: "Open Sans", "Lato", sans-serif;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: #060B19;
+    color: #e2e8f0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-serif);
+}
+
+.title-effect {
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8), -1px -1px 0px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes gradient-xy {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animate-gradient-xy {
+    background-size: 200% 200%;
+    animation: gradient-xy 8s ease infinite;
+}
