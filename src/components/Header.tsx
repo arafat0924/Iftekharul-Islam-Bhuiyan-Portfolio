@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, BookOpen, Gavel, Briefcase, Scale, Users, Image as ImageIcon, Mail, Home as HomeIcon, Landmark, Trophy } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '../lib/utils';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
