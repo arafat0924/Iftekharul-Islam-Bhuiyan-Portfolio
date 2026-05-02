@@ -322,6 +322,15 @@ export default function AdminDashboard() {
       const entered = imageField ? parseImageUrls(form[imageField.name]) : [];
       const payload = buildPayload(activeKey, form, [...entered, ...uploaded]);
 
+      // Check if we are running in production (e.g. on Netlify)
+      const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+      if (isProduction) {
+        setStatus("Production: Live saving not yet configured. Use Supabase/Firebase for dynamic data.");
+        // We could also do a local session save here if needed, but for now we just inform the user.
+        return;
+      }
+
       const response = await fetch(`/api/content/${activeKey}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -341,6 +350,13 @@ export default function AdminDashboard() {
 
   const removeItem = async (section: SectionKey, id: string) => {
     setStatus("Removing...");
+
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isProduction) {
+      setStatus("Production: Delete not available without a live database.");
+      return;
+    }
+
     const response = await fetch(`/api/content/${section}/${id}`, { method: "DELETE" });
 
     if (response.ok) {
@@ -354,6 +370,12 @@ export default function AdminDashboard() {
   const saveContactSettings = async (event: FormEvent) => {
     event.preventDefault();
     setStatus("Saving contact...");
+
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isProduction) {
+      setStatus("Production: Live saving not yet configured.");
+      return;
+    }
 
     const response = await fetch("/api/content/contact", {
       method: "PUT",
@@ -377,6 +399,12 @@ export default function AdminDashboard() {
     event.preventDefault();
     setStatus("Saving contact detail...");
 
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isProduction) {
+      setStatus("Production: Live saving not yet configured.");
+      return;
+    }
+
     const response = await fetch("/api/content/contact/details", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -394,6 +422,13 @@ export default function AdminDashboard() {
 
   const removeContactDetail = async (id: string) => {
     setStatus("Removing contact detail...");
+
+    const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+    if (isProduction) {
+      setStatus("Production: Delete not available without a live database.");
+      return;
+    }
+
     const response = await fetch(`/api/content/contact/details/${id}`, { method: "DELETE" });
 
     if (response.ok) {
