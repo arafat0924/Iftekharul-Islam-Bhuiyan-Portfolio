@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { defaultContent, type PortfolioContent } from "../data/content";
 
 export async function getPortfolioContent(): Promise<PortfolioContent> {
-  const response = await fetch("/api/content");
+  try {
+    const response = await fetch("/api/content");
 
-  if (!response.ok) {
-    throw new Error("Unable to load portfolio content");
+    if (!response.ok) {
+        console.warn("API returned non-ok status, using default content");
+        return defaultContent;
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch from /api/content, falling back to default content:", error);
+    return defaultContent;
   }
-
-  return response.json();
 }
 
 export function usePortfolioContent() {
@@ -20,9 +26,12 @@ export function usePortfolioContent() {
 
     getPortfolioContent()
       .then((data) => {
-        if (!cancelled) setContent(data);
+        if (!cancelled) {
+            setContent(data || defaultContent);
+        }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("Hook fetch error:", err);
         if (!cancelled) setContent(defaultContent);
       })
       .finally(() => {
